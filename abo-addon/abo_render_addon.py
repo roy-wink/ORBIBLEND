@@ -69,14 +69,14 @@ class ABO_OT_Camera_setup(bpy.types.Operator):
         Eevee = scene.eevee
         Eevee.volumetric_end = 1000
         Eevee.volumetric_tile_size = "2"
-        Eevee.volumetric_samples = 128
+        Eevee.taa_render_samples = 512
         Eevee.use_volumetric_shadows = True
         Eevee.volumetric_shadow_samples = 64
 
         # Ensure FFmpeg format and resolution
         scene.render.image_settings.file_format = "FFMPEG"
-        scene.render.resolution_x = 1024
-        scene.render.resolution_y = 1024
+        scene.render.resolution_x = 2048
+        scene.render.resolution_y = 2048        
 
         # Check if CameraPath already exists, and delete it
         camera_path = bpy.data.objects.get("CameraPath")
@@ -114,7 +114,7 @@ class ABO_OT_Camera_setup(bpy.types.Operator):
         )
         light = bpy.context.object
         light.name = "SunLight"
-        light.data.energy = 2.5
+        light.data.energy = 4.0
         light.data.angle = 0.2618
 
         # Check if LightCurve already exists, and delete it
@@ -219,7 +219,11 @@ class ABO_OT_Import_abofile(bpy.types.Operator):
                 ABO_OT_RotateOrbitalsZ,
                 ABO_OT_ChangeTransparency,
                 ABO_OT_ChangeZoom,
-
+                ABO_OT_EditMaterialColors,
+                ABO_OT_ConfirmMaterialColors,
+                ABO_OT_CancelMaterialColors,
+                
+    
                 ABO_PT_Render,
                 ABO_OT_RenderSingleFrame,
                 ABO_OT_RenderAnimationConfirm,
@@ -486,6 +490,9 @@ class ABO_OT_CreateMeshesFromFrame(bpy.types.Operator):
         bpy.context.space_data.shading.type = 'MATERIAL'
         bpy.context.workspace.status_text_set(None)
         self.report({'INFO'}, "Meshes created successfully!")
+        
+        # Register new properties
+        from bpy.utils import register_class
 
         # Registering new classes
         new_classes = (
@@ -494,6 +501,11 @@ class ABO_OT_CreateMeshesFromFrame(bpy.types.Operator):
             ABO_OT_RotateOrbitalsZ,
             ABO_OT_ChangeTransparency,
             ABO_OT_ChangeZoom,
+            ABO_OT_EditMaterialColors,
+            ABO_OT_ConfirmMaterialColors,
+            ABO_OT_CancelMaterialColors,
+            ABO_MaterialColorContainer,
+            
 
             ABO_PT_Render,
             ABO_OT_RenderSingleFrame,
@@ -502,12 +514,17 @@ class ABO_OT_CreateMeshesFromFrame(bpy.types.Operator):
         )
 
         try:
-            from bpy.utils import register_class
             for cls in new_classes:
                 register_class(cls)
         except ValueError:
             # Classes already registered
             pass
+        
+        # Populate material color containers
+        bpy.types.Scene.abo_color_entries = bpy.props.CollectionProperty(
+            type=ABO_MaterialColorContainer
+        )
+
 
     def finish_modal(self, context):
         """Clean up the modal operator."""
@@ -541,13 +558,17 @@ class ABO_PT_Tweak_view(bpy.types.Panel):
 
         # Row for changing the transparency of the orbitals
         row = layout.row()
-        row.operator("abo.change_transparency", text="Transp down").d_alpha = 0.1
-        row.operator("abo.change_transparency", text="Transp up").d_alpha = -0.1
+        row.operator("abo.change_transparency", text="Transp. down").d_alpha = 0.1
+        row.operator("abo.change_transparency", text="Transp. up").d_alpha = -0.1
 
         # Row for zooming the camera view in or out
         row = layout.row()
         row.operator("abo.change_zoom", text="Zoom in").d_distance = -2.0
         row.operator("abo.change_zoom", text="Zoom out").d_distance = 2.0
+        
+        # Row for changing the colors
+        row = layout.row()
+        row.operator("abo.edit_material_colors", text="Edit colors")
 
 def rotate_objects(axis, degrees, center=(0, 0, 0)):
     """Rotate atoms, bonds and orbitals over a defined axis."""
@@ -649,6 +670,112 @@ class ABO_OT_ChangeZoom(bpy.types.Operator):
     def execute(self, context):
         change_zoom(d_distance=self.d_distance)
         return {'FINISHED'}
+
+
+class ABO_OT_EditMaterialColors(bpy.types.Operator):
+    bl_idname = "abo.edit_material_colors"
+    bl_label = "Edit Material Colors"
+
+    _original_colors = {}
+
+    def invoke(self, context, event):
+        scene = context.scene
+
+        # Prepare color entries from materials
+        scene.abo_color_entries.clear()
+        self._original_colors.clear()
+
+        for mat in bpy.data.materials:
+            # Loop over all existing materials following naming convention
+            if mat.name.startswith(("molecule_material_", 
+                                    "orbital_material_", 
+                                    "bonds_material")):
+                
+                # Get original color
+                bsdf = mat.node_tree.nodes.get("Principled BSDF")
+                if bsdf:
+                    color = bsdf.inputs["Base Color"].default_value[:]
+                else:
+                    # reaching this error is almost surely user error...
+                    raise(KeyError, f"BSDF node not encountered for material {mat} \n\
+                                      please re-generate meshes")
+                
+                # Make popup entry
+                entry = scene.abo_color_entries.add()
+                entry.material_name = mat.name
+                entry.material_color = color
+                
+                # Cache original color
+                self._original_colors[mat.name] = color
+
+        if not scene.abo_color_entries:
+            self.report({'WARNING'}, "No ABO-related materials found")
+            return {'CANCELLED'}
+        
+        popup_width = 300
+        return context.window_manager.invoke_popup(self, width=popup_width)
+
+    def draw(self, context):
+        layout = self.layout
+        scene = context.scene
+        col = layout.column()
+
+        for entry in scene.abo_color_entries:
+            row = col.row()
+            row.label(text=entry.material_name)
+            row.prop(entry, "material_color", text="")
+
+        layout.separator()
+        row = layout.row()
+        row.operator("abo.confirm_material_colors", text="Confirm")
+        row.operator("abo.cancel_material_colors", text="Cancel")
+
+    def execute(self, context):
+        # Not used - confirm and cancel buttons trigger separate operators
+        return {'FINISHED'}
+
+
+class ABO_MaterialColorContainer(bpy.types.PropertyGroup):
+    """Temporary storage container for material colors"""
+    material_name: bpy.props.StringProperty()
+    material_color: bpy.props.FloatVectorProperty(
+        name="Color",
+        subtype='COLOR',
+        size=4,
+        min=0.0,
+        max=1.0,
+        default=(1.0,1.0,1.0,1.0),
+        options={'SKIP_SAVE', 'HIDDEN'}
+    )
+
+
+class ABO_OT_ConfirmMaterialColors(bpy.types.Operator):
+    bl_idname = "abo.confirm_material_colors"
+    bl_label = "Apply Colors"
+
+    def execute(self, context):
+        for entry in context.scene.abo_color_entries:
+            mat = bpy.data.materials.get(entry.material_name)
+            bsdf = mat.node_tree.nodes.get("Principled BSDF")
+            if bsdf:
+                bsdf.inputs["Base Color"].default_value = entry.material_color
+
+        return {'FINISHED'}
+
+
+class ABO_OT_CancelMaterialColors(bpy.types.Operator):
+    bl_idname = "abo.cancel_material_colors"
+    bl_label = "Cancel Color Changes"
+
+    def execute(self, context):
+        for entry in context.scene.abo_color_entries:
+            mat = bpy.data.materials.get(entry.material_name)
+            original = ABO_OT_EditMaterialColors._original_colors.get(entry.material_name)
+            bsdf = mat.node_tree.nodes.get("Principled BSDF")
+            if bsdf:
+                bsdf.inputs["Base Color"].default_value = original
+
+        return {'CANCELLED'}
 
 
 class ABO_PT_Render(bpy.types.Panel):
@@ -805,6 +932,7 @@ def unregister_properties():
     del bpy.types.Scene.abo_show_molecule
     del bpy.types.Scene.abo_unit_selection
     del bpy.types.Scene.abo_previous_unit
+    del bpy.types.Scene.abo_color_entries
 
 
 def unregister():
