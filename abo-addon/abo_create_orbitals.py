@@ -17,18 +17,18 @@ class CreateOrbitals:
 
         # Create mesh objects for each model
         generated_objects = []
-        for model in active_frame.models:
-            vertices = [(v.v1, v.v2, v.v3) for v in model.vertices]
-            faces = [(f.f1, f.f2, f.f3) for f in model.faces]
-            normals = [(n.n1, n.n2, n.n3) for n in model.normals]
+        for model in active_frame["models"]:
+            vertices = model["vertices"]
+            faces = model["faces"]
+            normals = model["normals"]
 
             try:
                 # Create the mesh
-                obj = CreateMeshObject.create_mesh_object(f"orbital_model_{model.index}", vertices, faces, normals)
+                obj = CreateMeshObject.create_mesh_object(f"orbital_model_{model['index']}", vertices, faces, normals)
 
                 # Create or retrieve material for the color
-                color = model.color
-                material_name = f"orbital_material_{model.index}"
+                color = model["color"]
+                material_name = f"orbital_material_{model['index']}"
                 material = bpy.data.materials.get(material_name)
                 if not material:
                     material = bpy.data.materials.new(name=material_name)
@@ -71,10 +71,10 @@ class CreateOrbitals:
                         collection.objects.unlink(obj)
 
                 generated_objects.append(obj)
-                self.report({'INFO'}, f"Mesh created for model {model.index}")
+                self.report({'INFO'}, f"Mesh created for model {model['index']}")
 
             except Exception as e:
-                self.report({'WARNING'}, f"Error creating mesh for model {model.index}: {e}")
+                self.report({'WARNING'}, f"Error creating mesh for model {model['index']}: {e}")
                 continue
 
         # Rename models if there are exactly two

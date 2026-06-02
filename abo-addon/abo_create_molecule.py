@@ -52,7 +52,7 @@ class CreateMolecule:
         # check the bool if the viewport has been altered. If so, remove everything.
 
         # Compare molecules in collection - if equal to request, return finished
-        new_molecule = [(atom.x, atom.y, atom.z) for atom in active_frame.atoms]
+        new_molecule = [(atom[2], atom[3], atom[4]) for atom in active_frame["atoms"]]
         new_molecule.sort()
 
         if new_molecule == present_molecule and \
@@ -76,10 +76,10 @@ class CreateMolecule:
             atom_info = json.load(file)["atom"]
 
         generated_objects = []
-        for atom in active_frame.atoms:
-            sphere_segments = 256
+        for atom in active_frame["atoms"]:
+            sphere_segments = 48
 
-            atomic_number = atom.an
+            atom_index, atomic_number, atom_x, atom_y, atom_z = atom
 
             # Receive color and radius
             element = atom_info["element"][str(atomic_number)]
@@ -95,12 +95,12 @@ class CreateMolecule:
                 segments=sphere_segments,
                 ring_count=int(sphere_segments/4),
                 radius=atom_radius,
-                location=(atom.x, atom.y, atom.z),
+                location=(atom_x, atom_y, atom_z),
                 align="WORLD"
             )
 
             obj = bpy.context.object
-            obj.name = f"molecule_atom_{atom.index}_{element}"
+            obj.name = f"molecule_atom_{atom_index}_{element}"
 
             # Check if material exists, else make new material
             material_name = f"molecule_material_{atomic_number}"
@@ -152,4 +152,4 @@ class CreateMolecule:
         bond_maker.create_bonds(bond_maker, context, active_frame)
 
         # Set the unit in storage
-        bpy.types.Scene.abo_previous_unit = bpy.types.Scene.abo_unit_selection
+        context.scene.abo_previous_unit = context.scene.abo_unit_selection

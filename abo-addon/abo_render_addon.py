@@ -56,7 +56,8 @@ class ABO_OT_Camera_setup(bpy.types.Operator):
         # Ensure the camera exists
         cam = bpy.data.objects.get("Camera")
         if not cam:
-            cam = bpy.ops.object.camera_add()
+            bpy.ops.object.camera_add()
+            cam = bpy.context.object
 
         # Set the camera on a specific location and rotation
         cam_distance = 15
@@ -210,34 +211,6 @@ class ABO_OT_Import_abofile(bpy.types.Operator):
         return {"RUNNING_MODAL"}
 
     def execute(self, context):
-        # Unregister tweak & render classes (new file, so no meshes)
-        try:
-            from bpy.utils import unregister_class
-            removable_classes = (
-                ABO_PT_Tweak_view,
-                ABO_OT_RotateOrbitalsX,
-                ABO_OT_RotateOrbitalsZ,
-                ABO_OT_ChangeTransparency,
-                ABO_OT_ChangeZoom,
-                ABO_OT_EditMaterialColors,
-                ABO_OT_ConfirmMaterialColors,
-                ABO_OT_CancelMaterialColors,
-                
-    
-                ABO_PT_Render,
-                ABO_OT_RenderSingleFrame,
-                ABO_OT_RenderAnimationConfirm,
-                ABO_OT_ConfirmRenderAnimation
-            )
-
-            for cls in removable_classes:
-                if "bl_rna" in cls.__dict__:
-                    unregister_class(cls)
-
-        except ValueError:
-            # Classes not registered, probably at start
-            pass
-
         # Actually import .abo file and populate models
         from .abo_parse_abofile import AboImport
         AboImport.import_abofile(self, context)
@@ -245,22 +218,6 @@ class ABO_OT_Import_abofile(bpy.types.Operator):
         # Select first frame
         scene = context.scene
         scene.abo_active_frame_index = 0
-
-        # Register frame classes
-        try:
-            from bpy.utils import register_class
-            new_classes = (
-                ABO_PT_Frames,
-                ABO_UL_Frames,
-                ABO_OT_CreateMeshesFromFrame
-            )
-
-            for cls in new_classes:
-                register_class(cls)
-
-        except ValueError:
-            # Classes already registered, probably upon loading new .abo file
-            pass
 
         return {"FINISHED"}
 
@@ -274,42 +231,22 @@ class ABO_Atom(bpy.types.PropertyGroup):
     z: bpy.props.FloatProperty(name="Z")
 
 
-class ABO_Face(bpy.types.PropertyGroup):
-    """Represents a face (tuple of 3 integers)"""
-    f1: bpy.props.IntProperty(name="Face vertex 1")
-    f2: bpy.props.IntProperty(name="Face vertex 2")
-    f3: bpy.props.IntProperty(name="Face vertex 3")
-
-
-class ABO_Vertex(bpy.types.PropertyGroup):
-    """Represents a vertex (tuple of 3 floats)"""
-    v1: bpy.props.FloatProperty(name="Vertex 1")
-    v2: bpy.props.FloatProperty(name="Vertex 2")
-    v3: bpy.props.FloatProperty(name="Vertex 3")
-
-
-class ABO_Normal(bpy.types.PropertyGroup):
-    """Represents a normal (tuple of 3 floats)"""
-    n1: bpy.props.FloatProperty(name="Normal 1")
-    n2: bpy.props.FloatProperty(name="Normal 2")
-    n3: bpy.props.FloatProperty(name="Normal 3")
-
-
 class ABO_Model(bpy.types.PropertyGroup):
-    """Represents a model (or lobe)"""
+    """Represents lightweight model metadata."""
     index: bpy.props.IntProperty(name="Model index")
     color: bpy.props.FloatVectorProperty(name="Color", size=4, subtype='COLOR', min=0.0, max=1.0)
-    faces: bpy.props.CollectionProperty(type=ABO_Face)
-    vertices: bpy.props.CollectionProperty(type=ABO_Vertex)
-    normals: bpy.props.CollectionProperty(type=ABO_Normal)
+    vertex_count: bpy.props.IntProperty(name="Vertex count")
+    face_count: bpy.props.IntProperty(name="Face count")
 
 
 class ABO_Frame_property(bpy.types.PropertyGroup):
-    """Represents a frame"""
+    """Represents lightweight frame metadata."""
     index: bpy.props.IntProperty(name="Frame index")
     description: bpy.props.StringProperty(name="Description")
-    atoms: bpy.props.CollectionProperty(type=ABO_Atom)
-    models: bpy.props.CollectionProperty(type=ABO_Model)
+    atom_count: bpy.props.IntProperty(name="Atom count")
+    model_count: bpy.props.IntProperty(name="Model count")
+    vertex_count: bpy.props.IntProperty(name="Vertex count")
+    face_count: bpy.props.IntProperty(name="Face count")
 
 
 class ABO_PT_Frames(bpy.types.Panel):
@@ -320,6 +257,9 @@ class ABO_PT_Frames(bpy.types.Panel):
     bl_region_type = "UI"
     bl_category = "ABO"
 
+    @classmethod
+    def poll(cls, context):
+        return hasattr(context.scene, "abo_frames") and len(context.scene.abo_frames) > 0
 
     def draw(self, context):
         layout = self.layout
@@ -352,8 +292,13 @@ class ABO_PT_Frames(bpy.types.Panel):
             row.prop(scene, "abo_show_molecule", text="Show Molecule")
             
             # If no models, disable checkbox (already set to True via update function)
-            if len(active_frame.models) == 0:
+            if active_frame.model_count == 0:
                 row.enabled = False
+
+            if active_frame.model_count > 0:
+                layout.label(text=f"Models: {active_frame.model_count}")
+                layout.label(text=f"Vertices: {active_frame.vertex_count}")
+                layout.label(text=f"Faces: {active_frame.face_count}")
             
             # Unit selection dropdown
             layout.prop(scene, "abo_unit_selection", text="Units")
@@ -392,7 +337,12 @@ class ABO_OT_CreateMeshesFromFrame(bpy.types.Operator):
             self.report({'ERROR'}, "No frame selected")
             return {'CANCELLED'}
 
-        active_frame = scene.abo_frames[scene.abo_active_frame_index]
+        if not scene.abo_filepath:
+            self.report({'ERROR'}, "No .abo file path stored. Import a file first.")
+            return {'CANCELLED'}
+
+        from .py_abo_reader import PyAboReader
+        active_frame = PyAboReader().read_frame(scene.abo_filepath, scene.abo_active_frame_index)
 
         # Prepare task queue
         self._tasks = [
@@ -453,11 +403,11 @@ class ABO_OT_CreateMeshesFromFrame(bpy.types.Operator):
 
     def validate_data(self, context, active_frame):
         """Validate data in the models."""
-        if len(active_frame.models) > 0:
-            for model in active_frame.models:
-                vertices = [(v.v1, v.v2, v.v3) for v in model.vertices]
-                faces = [(f.f1, f.f2, f.f3) for f in model.faces]
-                normals = [(n.n1, n.n2, n.n3) for n in model.normals]
+        if len(active_frame["models"]) > 0:
+            for model in active_frame["models"]:
+                vertices = model["vertices"]
+                faces = model["faces"]
+                normals = model["normals"]
 
                 # Skip empty models
                 if not vertices or not faces:
@@ -468,62 +418,30 @@ class ABO_OT_CreateMeshesFromFrame(bpy.types.Operator):
                 for face in faces:
                     if any(v >= len(vertices) for v in face):
                         print(f"Invalid face detected: {face} (max vertex index is {len(vertices) - 1})")
-                        raise ValueError(f"Invalid face indices in model {model.index}")
+                        raise ValueError(f"Invalid face indices in model {model['index']}")
 
                 # Validate the normals
                 if len(normals) != 0 and len(normals) != len(vertices):
-                    raise ValueError(f"Normals count ({len(normals)}) does not match vertices count ({len(vertices)}) in model {model.index}")
+                    raise ValueError(f"Normals count ({len(normals)}) does not match vertices count ({len(vertices)}) in model {model['index']}")
 
-                print(f"Data validation successful for model {model.index}")
-                self.report({'INFO'}, f"Model {model.index}: {len(vertices)} vertices, {len(faces)} faces, {len(normals)} normals")
+                print(f"Data validation successful for model {model['index']}")
+                self.report({'INFO'}, f"Model {model['index']}: {len(vertices)} vertices, {len(faces)} faces, {len(normals)} normals")
 
     def generate_orbitals(self, context, active_frame):
         """Generate orbitals."""
         from .abo_create_orbitals import CreateOrbitals
 
-        if len(active_frame.models) > 0:
+        if len(active_frame["models"]) > 0:
             CreateOrbitals.create_orbitals(self, active_frame, bpy.data.collections.get("Orbitals"))
 
     def finalize(self):
         """Finalize the operation."""
         bpy.ops.object.select_all(action="DESELECT")
-        bpy.context.space_data.shading.type = 'MATERIAL'
+        if bpy.context.space_data and hasattr(bpy.context.space_data, "shading"):
+            bpy.context.space_data.shading.type = 'MATERIAL'
         bpy.context.workspace.status_text_set(None)
         self.report({'INFO'}, "Meshes created successfully!")
-        
-        # Register new properties
-        from bpy.utils import register_class
-
-        # Registering new classes
-        new_classes = (
-            ABO_PT_Tweak_view,
-            ABO_OT_RotateOrbitalsX,
-            ABO_OT_RotateOrbitalsZ,
-            ABO_OT_ChangeTransparency,
-            ABO_OT_ChangeZoom,
-            ABO_OT_EditMaterialColors,
-            ABO_OT_ConfirmMaterialColors,
-            ABO_OT_CancelMaterialColors,
-            ABO_MaterialColorContainer,
-            
-
-            ABO_PT_Render,
-            ABO_OT_RenderSingleFrame,
-            ABO_OT_RenderAnimationConfirm,
-            ABO_OT_ConfirmRenderAnimation
-        )
-
-        try:
-            for cls in new_classes:
-                register_class(cls)
-        except ValueError:
-            # Classes already registered
-            pass
-        
-        # Populate material color containers
-        bpy.types.Scene.abo_color_entries = bpy.props.CollectionProperty(
-            type=ABO_MaterialColorContainer
-        )
+        bpy.context.scene.abo_meshes_created = True
 
 
     def finish_modal(self, context):
@@ -541,6 +459,14 @@ class ABO_PT_Tweak_view(bpy.types.Panel):
     bl_space_type = "VIEW_3D"
     bl_region_type = "UI"
     bl_category = "ABO"
+
+    @classmethod
+    def poll(cls, context):
+        orbitals = bpy.data.collections.get("Orbitals")
+        molecule = bpy.data.collections.get("Molecule")
+        return bool(getattr(context.scene, "abo_meshes_created", False)) or bool(
+            (orbitals and len(orbitals.objects) > 0) or (molecule and len(molecule.objects) > 0)
+        )
 
     def draw(self, context):
         layout = self.layout
@@ -569,6 +495,20 @@ class ABO_PT_Tweak_view(bpy.types.Panel):
         # Row for changing the colors
         row = layout.row()
         row.operator("abo.edit_material_colors", text="Edit colors")
+
+        scene = context.scene
+        if getattr(scene, "abo_color_editing", False):
+            layout.separator()
+            col = layout.column()
+
+            for entry in scene.abo_color_entries:
+                row = col.row()
+                row.label(text=entry.material_name)
+                row.prop(entry, "material_color", text="")
+
+            row = layout.row()
+            row.operator("abo.confirm_material_colors", text="Confirm")
+            row.operator("abo.cancel_material_colors", text="Cancel")
 
 def rotate_objects(axis, degrees, center=(0, 0, 0)):
     """Rotate atoms, bonds and orbitals over a defined axis."""
@@ -711,9 +651,9 @@ class ABO_OT_EditMaterialColors(bpy.types.Operator):
         if not scene.abo_color_entries:
             self.report({'WARNING'}, "No ABO-related materials found")
             return {'CANCELLED'}
-        
-        popup_width = 300
-        return context.window_manager.invoke_popup(self, width=popup_width)
+
+        scene.abo_color_editing = True
+        return {'FINISHED'}
 
     def draw(self, context):
         layout = self.layout
@@ -731,8 +671,7 @@ class ABO_OT_EditMaterialColors(bpy.types.Operator):
         row.operator("abo.cancel_material_colors", text="Cancel")
 
     def execute(self, context):
-        # Not used - confirm and cancel buttons trigger separate operators
-        return {'FINISHED'}
+        return self.invoke(context, None)
 
 
 class ABO_MaterialColorContainer(bpy.types.PropertyGroup):
@@ -756,10 +695,14 @@ class ABO_OT_ConfirmMaterialColors(bpy.types.Operator):
     def execute(self, context):
         for entry in context.scene.abo_color_entries:
             mat = bpy.data.materials.get(entry.material_name)
-            bsdf = mat.node_tree.nodes.get("Principled BSDF")
+            bsdf = mat.node_tree.nodes.get("Principled BSDF") if mat else None
             if bsdf:
                 bsdf.inputs["Base Color"].default_value = entry.material_color
+                mat.diffuse_color = entry.material_color
 
+        context.scene.abo_color_editing = False
+        for area in context.screen.areas:
+            area.tag_redraw()
         return {'FINISHED'}
 
 
@@ -771,10 +714,14 @@ class ABO_OT_CancelMaterialColors(bpy.types.Operator):
         for entry in context.scene.abo_color_entries:
             mat = bpy.data.materials.get(entry.material_name)
             original = ABO_OT_EditMaterialColors._original_colors.get(entry.material_name)
-            bsdf = mat.node_tree.nodes.get("Principled BSDF")
-            if bsdf:
+            bsdf = mat.node_tree.nodes.get("Principled BSDF") if mat else None
+            if bsdf and original:
                 bsdf.inputs["Base Color"].default_value = original
+                mat.diffuse_color = original
 
+        context.scene.abo_color_editing = False
+        for area in context.screen.areas:
+            area.tag_redraw()
         return {'CANCELLED'}
 
 
@@ -785,6 +732,14 @@ class ABO_PT_Render(bpy.types.Panel):
     bl_space_type = "VIEW_3D"
     bl_region_type = "UI"
     bl_category = "ABO"
+
+    @classmethod
+    def poll(cls, context):
+        orbitals = bpy.data.collections.get("Orbitals")
+        molecule = bpy.data.collections.get("Molecule")
+        return bool(getattr(context.scene, "abo_meshes_created", False)) or bool(
+            (orbitals and len(orbitals.objects) > 0) or (molecule and len(molecule.objects) > 0)
+        )
 
     def draw(self, context):
         layout = self.layout
@@ -841,15 +796,27 @@ classes = (
     ABO_PT_Initialize_workspace,
     ABO_OT_Delete_elements,
     ABO_OT_Camera_setup,
-
     ABO_PT_Import_abofile,
     ABO_OT_Import_abofile,
     ABO_Atom,
-    ABO_Face,
-    ABO_Vertex,
-    ABO_Normal,
     ABO_Model,
-    ABO_Frame_property
+    ABO_Frame_property,
+    ABO_UL_Frames,
+    ABO_PT_Frames,
+    ABO_OT_CreateMeshesFromFrame,
+    ABO_PT_Tweak_view,
+    ABO_OT_RotateOrbitalsX,
+    ABO_OT_RotateOrbitalsZ,
+    ABO_OT_ChangeTransparency,
+    ABO_OT_ChangeZoom,
+    ABO_OT_EditMaterialColors,
+    ABO_MaterialColorContainer,
+    ABO_OT_ConfirmMaterialColors,
+    ABO_OT_CancelMaterialColors,
+    ABO_PT_Render,
+    ABO_OT_RenderSingleFrame,
+    ABO_OT_RenderAnimationConfirm,
+    ABO_OT_ConfirmRenderAnimation,
 )
 
 
@@ -903,12 +870,34 @@ def register_properties():
         default='NONE'
     )
 
+    bpy.types.Scene.abo_filepath = bpy.props.StringProperty(
+        name=".abo File Path",
+        subtype="FILE_PATH",
+        default=""
+    )
+
+    bpy.types.Scene.abo_meshes_created = bpy.props.BoolProperty(
+        name="ABO Meshes Created",
+        default=False,
+        options={'SKIP_SAVE'}
+    )
+
+    bpy.types.Scene.abo_color_entries = bpy.props.CollectionProperty(
+        type=ABO_MaterialColorContainer
+    )
+
+    bpy.types.Scene.abo_color_editing = bpy.props.BoolProperty(
+        name="Editing ABO Colors",
+        default=False,
+        options={'SKIP_SAVE'}
+    )
+
 
 def update_active_frame(self, context):
     """Ensure 'Show Molecule' is checked when selecting a frame with no models"""
     if context.scene.abo_frames and self.abo_active_frame_index >= 0:
         active_frame = context.scene.abo_frames[self.abo_active_frame_index]
-        if len(active_frame.models) == 0:
+        if active_frame.model_count == 0:
             # Force checkbox to True when no models are present
             self.abo_show_molecule = True  
 
@@ -926,13 +915,20 @@ def register():
 
 
 def unregister_properties():
-    del bpy.types.Scene.abo_camera_position
-    del bpy.types.Scene.abo_frames
-    del bpy.types.Scene.abo_active_frame_index
-    del bpy.types.Scene.abo_show_molecule
-    del bpy.types.Scene.abo_unit_selection
-    del bpy.types.Scene.abo_previous_unit
-    del bpy.types.Scene.abo_color_entries
+    for property_name in (
+        "abo_camera_position",
+        "abo_frames",
+        "abo_active_frame_index",
+        "abo_show_molecule",
+        "abo_unit_selection",
+        "abo_previous_unit",
+        "abo_filepath",
+        "abo_meshes_created",
+        "abo_color_entries",
+        "abo_color_editing",
+    ):
+        if hasattr(bpy.types.Scene, property_name):
+            delattr(bpy.types.Scene, property_name)
 
 
 def unregister():

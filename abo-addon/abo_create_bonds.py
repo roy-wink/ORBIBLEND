@@ -48,8 +48,11 @@ class CreateBonds:
     def create_cylinder(atom_1, atom_2, length, radius):
         import math
 
-        coor_1 = (atom_1.x, atom_1.y, atom_1.z)
-        coor_2 = (atom_2.x, atom_2.y, atom_2.z)
+        atom_1_index, _, atom_1_x, atom_1_y, atom_1_z = atom_1
+        atom_2_index, _, atom_2_x, atom_2_y, atom_2_z = atom_2
+
+        coor_1 = (atom_1_x, atom_1_y, atom_1_z)
+        coor_2 = (atom_2_x, atom_2_y, atom_2_z)
 
         # Calculate midpoint of cylinder
         midpoint = (
@@ -72,7 +75,7 @@ class CreateBonds:
         rot_z = math.atan2(y, x)
 
         # Create the cylinder
-        cylinder_name = f"bond_{atom_1.index}_{atom_2.index}"
+        cylinder_name = f"bond_{atom_1_index}_{atom_2_index}"
         bpy.ops.mesh.primitive_cylinder_add(
             radius=radius,
             depth=length,
@@ -140,16 +143,16 @@ class CreateBonds:
             radius = radius * 1.88372
 
         from itertools import combinations
-        atoms = active_frame.atoms
+        atoms = active_frame["atoms"]
         atom_combinations = combinations(range(len(atoms)), 2)
         for combination in atom_combinations:
             atom_1 = atoms[combination[0]]
-            element_1 = atom_1.an
-            coor_1 = (atom_1.x, atom_1.y, atom_1.z)
+            _, element_1, atom_1_x, atom_1_y, atom_1_z = atom_1
+            coor_1 = (atom_1_x, atom_1_y, atom_1_z)
 
             atom_2 = atoms[combination[1]]
-            element_2 = atom_2.an
-            coor_2 = (atom_2.x, atom_2.y, atom_2.z)
+            _, element_2, atom_2_x, atom_2_y, atom_2_z = atom_2
+            coor_2 = (atom_2_x, atom_2_y, atom_2_z)
 
             distance = self.get_distance(coor_1, coor_2)
             if self.do_draw_bond(element_1, element_2, distance, unit):
