@@ -74,8 +74,10 @@ class ABO_OT_Camera_setup(bpy.types.Operator):
         Eevee.use_volumetric_shadows = True
         Eevee.volumetric_shadow_samples = 64
 
-        # Ensure FFmpeg format and resolution
+        # Ensure transparent film, default animation format, and resolution
+        scene.render.film_transparent = True
         scene.render.image_settings.file_format = "FFMPEG"
+        scene.render.image_settings.color_mode = "RGB"
         scene.render.resolution_x = 2048
         scene.render.resolution_y = 2048        
 
@@ -751,12 +753,25 @@ class ABO_PT_Render(bpy.types.Panel):
         layout.operator("abo.render_animation", text="Render Animation", icon="RENDER_ANIMATION")
 
 
+def configure_single_frame_output(scene):
+    """Configure output settings for a still render with transparency."""
+    scene.render.image_settings.file_format = "PNG"
+    scene.render.image_settings.color_mode = "RGBA"
+
+
+def configure_animation_output(scene):
+    """Configure output settings for an RGB FFmpeg animation."""
+    scene.render.image_settings.file_format = "FFMPEG"
+    scene.render.image_settings.color_mode = "RGB"
+
+
 class ABO_OT_RenderSingleFrame(bpy.types.Operator):
     """Render the current frame"""
     bl_idname = "abo.render_single_frame"
     bl_label = "Render Current Frame"
 
     def execute(self, context):
+        configure_single_frame_output(context.scene)
         bpy.ops.render.render("INVOKE_DEFAULT")
         return {'FINISHED'}
 
@@ -777,6 +792,7 @@ class ABO_OT_ConfirmRenderAnimation(bpy.types.Operator):
     bl_label = "Render Animation"
 
     def execute(self, context):
+        configure_animation_output(context.scene)
         bpy.ops.render.render("INVOKE_DEFAULT", animation=True)  # Start animation rendering
         self.report({'INFO'}, "Rendering animation started!")
         return {'FINISHED'}
