@@ -5,21 +5,20 @@ pushd %~dp0
 REM Command file for Sphinx documentation
 
 if "%SPHINXBUILD%" == "" (
-	set SPHINXBUILD=sphinx-build
+	set SPHINXBUILD=python -m sphinx
 )
 set SOURCEDIR=source
 set BUILDDIR=build
 
-%SPHINXBUILD% >NUL 2>NUL
-if errorlevel 9009 (
+%SPHINXBUILD% --version >NUL 2>NUL
+if errorlevel 1 (
 	echo.
-	echo.The 'sphinx-build' command was not found. Make sure you have Sphinx
-	echo.installed, then set the SPHINXBUILD environment variable to point
-	echo.to the full path of the 'sphinx-build' executable. Alternatively you
-	echo.may add the Sphinx directory to PATH.
+	echo.Sphinx was not found for this Python installation. Install the
+	echo.documentation dependencies from the repository root with:
 	echo.
-	echo.If you don't have Sphinx installed, grab it from
-	echo.https://www.sphinx-doc.org/
+	echo.    python -m pip install -r docs\requirements.txt
+	echo.
+	echo.Then run this command again.
 	exit /b 1
 )
 
