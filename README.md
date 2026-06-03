@@ -3,7 +3,7 @@
 <p align="center">
   <img src="docs/img/orbiblend_logo.png" alt="ORBIBLEND logo" width="320">
 </p>
-
+ 
 **ORBIBLEND** is a Blender add-on for visualizing molecules and molecular orbitals from `.abo` files. It is designed especially for educational use: students can import a file, choose a molecular orbital, adjust the view, and render an image or animation from one focused Blender sidebar.
 
 The add-on aims to make orbital visualization approachable for users who are new to Blender, while still leaving the generated Blender scene editable for users who want more control.
