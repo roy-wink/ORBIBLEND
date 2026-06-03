@@ -411,7 +411,7 @@ class ABO_OT_CreateMeshesFromFrame(bpy.types.Operator):
 
                 # Skip empty models
                 if not vertices or not faces:
-                    self.report({'INFO'}, f"Skipping model {model.index} due to empty vertices and/or faces")
+                    self.report({'INFO'}, f"Skipping model {model['index']} due to empty vertices and/or faces")
                     continue
 
                 # Validate face indices

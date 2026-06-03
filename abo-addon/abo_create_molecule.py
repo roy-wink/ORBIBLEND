@@ -77,7 +77,7 @@ class CreateMolecule:
 
         generated_objects = []
         for atom in active_frame["atoms"]:
-            sphere_segments = 48
+            sphere_segments = 256
 
             atom_index, atomic_number, atom_x, atom_y, atom_z = atom
 
