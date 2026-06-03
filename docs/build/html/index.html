@@ -1,0 +1,212 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ORBIBLEND: Molecular orbital visualization in Blender &mdash; ORBIBLEND 0.2 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=9edc463e" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=10f1778b"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Getting started" href="getting-started.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="#" class="icon icon-home">
+            ORBIBLEND
+              <img src="_static/orbiblend_logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">User guide</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="getting-started.html">Getting started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="quickstart.html">Quickstart: your first orbital render</a></li>
+<li class="toctree-l1"><a class="reference internal" href="interface.html">Interface guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="workflow.html">Common workflows</a></li>
+<li class="toctree-l1"><a class="reference internal" href="educational-use.html">Educational use</a></li>
+<li class="toctree-l1"><a class="reference internal" href="file-format.html">ABO files</a></li>
+<li class="toctree-l1"><a class="reference internal" href="troubleshooting.html">Troubleshooting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="glossary.html">Glossary</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="#">ORBIBLEND</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="#" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">ORBIBLEND: Molecular orbital visualization in Blender</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/index.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="orbiblend-molecular-orbital-visualization-in-blender">
+<h1>ORBIBLEND: Molecular orbital visualization in Blender<a class="headerlink" href="#orbiblend-molecular-orbital-visualization-in-blender" title="Link to this heading"></a></h1>
+<a class="reference internal image-reference" href="_images/orbiblend_logo.png"><img alt="ORBIBLEND logo" class="align-center" src="_images/orbiblend_logo.png" style="width: 280px;" />
+</a>
+<p><strong>ORBIBLEND</strong> is a Blender add-on for quickly visualizing molecules and
+molecular orbitals from <code class="docutils literal notranslate"><span class="pre">.abo</span></code> files.  It is designed for classroom and
+self-study settings: the main workflow lives in one Blender sidebar tab, and
+this documentation assumes that you may be opening Blender for the first time.</p>
+<p>The add-on connects quantum-chemistry output to Blender’s rendering tools.  An
+<code class="docutils literal notranslate"><span class="pre">.abo</span></code> file stores atom positions and tessellated orbital isosurfaces; ORBIBLEND
+lets you import those frames, choose the orbital or molecule view that you want,
+adjust the camera, and render still images or rotating animations.</p>
+<section id="start-here">
+<h2>Start here<a class="headerlink" href="#start-here" title="Link to this heading"></a></h2>
+<p>If you are new to ORBIBLEND, read these pages in order:</p>
+<ol class="arabic simple">
+<li><p><a class="reference internal" href="getting-started.html"><span class="doc">Getting started</span></a> explains installation and how to find the ABO sidebar.</p></li>
+<li><p><a class="reference internal" href="quickstart.html"><span class="doc">Quickstart: your first orbital render</span></a> walks through creating your first molecular-orbital render.</p></li>
+<li><p><a class="reference internal" href="interface.html"><span class="doc">Interface guide</span></a> explains every panel and button in the add-on.</p></li>
+<li><p><a class="reference internal" href="workflow.html"><span class="doc">Common workflows</span></a> gives practical step-by-step recipes for common classroom tasks.</p></li>
+</ol>
+</section>
+<section id="educational-focus">
+<h2>Educational focus<a class="headerlink" href="#educational-focus" title="Link to this heading"></a></h2>
+<p>ORBIBLEND aims to help students build intuition about molecular orbitals rather
+than to hide the chemistry behind a photorealistic image.  The documentation
+therefore explains Blender vocabulary, suggests safe default settings, and points
+out where visual choices can change how an orbital is perceived.</p>
+</section>
+<section id="contents">
+<h2>Contents<a class="headerlink" href="#contents" title="Link to this heading"></a></h2>
+<div class="toctree-wrapper compound">
+<p class="caption" role="heading"><span class="caption-text">User guide</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="getting-started.html">Getting started</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="getting-started.html#what-you-need">What you need</a></li>
+<li class="toctree-l2"><a class="reference internal" href="getting-started.html#blender-words-used-in-this-guide">Blender words used in this guide</a></li>
+<li class="toctree-l2"><a class="reference internal" href="getting-started.html#installing-the-add-on">Installing the add-on</a></li>
+<li class="toctree-l2"><a class="reference internal" href="getting-started.html#finding-the-abo-sidebar">Finding the ABO sidebar</a></li>
+<li class="toctree-l2"><a class="reference internal" href="getting-started.html#recommended-first-setup">Recommended first setup</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="quickstart.html">Quickstart: your first orbital render</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="quickstart.html#open-blender">1. Open Blender</a></li>
+<li class="toctree-l2"><a class="reference internal" href="quickstart.html#open-the-abo-tab">2. Open the ABO tab</a></li>
+<li class="toctree-l2"><a class="reference internal" href="quickstart.html#prepare-the-workspace">3. Prepare the workspace</a></li>
+<li class="toctree-l2"><a class="reference internal" href="quickstart.html#import-an-abo-file">4. Import an ABO file</a></li>
+<li class="toctree-l2"><a class="reference internal" href="quickstart.html#choose-what-to-draw">5. Choose what to draw</a></li>
+<li class="toctree-l2"><a class="reference internal" href="quickstart.html#adjust-the-view">6. Adjust the view</a></li>
+<li class="toctree-l2"><a class="reference internal" href="quickstart.html#render">7. Render</a></li>
+<li class="toctree-l2"><a class="reference internal" href="quickstart.html#saving-your-image">Saving your image</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="interface.html">Interface guide</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="interface.html#prepare-workspace">Prepare workspace</a></li>
+<li class="toctree-l2"><a class="reference internal" href="interface.html#import-abo-file">Import .abo file</a></li>
+<li class="toctree-l2"><a class="reference internal" href="interface.html#abo-frames">.abo frames</a></li>
+<li class="toctree-l2"><a class="reference internal" href="interface.html#tweak-view">Tweak view</a></li>
+<li class="toctree-l2"><a class="reference internal" href="interface.html#render">Render</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="workflow.html">Common workflows</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="workflow.html#create-a-still-image-for-a-worksheet">Create a still image for a worksheet</a></li>
+<li class="toctree-l2"><a class="reference internal" href="workflow.html#create-a-rotating-animation">Create a rotating animation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="workflow.html#show-only-the-molecule">Show only the molecule</a></li>
+<li class="toctree-l2"><a class="reference internal" href="workflow.html#compare-multiple-orbitals">Compare multiple orbitals</a></li>
+<li class="toctree-l2"><a class="reference internal" href="workflow.html#change-colors-for-accessibility">Change colors for accessibility</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="educational-use.html">Educational use</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="educational-use.html#suggested-learning-goals">Suggested learning goals</a></li>
+<li class="toctree-l2"><a class="reference internal" href="educational-use.html#guidance-for-first-time-blender-users">Guidance for first-time Blender users</a></li>
+<li class="toctree-l2"><a class="reference internal" href="educational-use.html#making-figures-easier-to-interpret">Making figures easier to interpret</a></li>
+<li class="toctree-l2"><a class="reference internal" href="educational-use.html#classroom-activity-ideas">Classroom activity ideas</a></li>
+<li class="toctree-l2"><a class="reference internal" href="educational-use.html#accessibility-notes">Accessibility notes</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="file-format.html">ABO files</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="file-format.html#what-a-frame-contains">What a frame contains</a></li>
+<li class="toctree-l2"><a class="reference internal" href="file-format.html#how-orbiblend-reads-files">How ORBIBLEND reads files</a></li>
+<li class="toctree-l2"><a class="reference internal" href="file-format.html#units">Units</a></li>
+<li class="toctree-l2"><a class="reference internal" href="file-format.html#sample-files">Sample files</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="troubleshooting.html">Troubleshooting</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="troubleshooting.html#the-abo-tab-is-not-visible">The ABO tab is not visible</a></li>
+<li class="toctree-l2"><a class="reference internal" href="troubleshooting.html#import-succeeds-but-no-molecule-or-orbital-appears">Import succeeds but no molecule or orbital appears</a></li>
+<li class="toctree-l2"><a class="reference internal" href="troubleshooting.html#create-meshes-says-no-file-path-is-stored">Create Meshes says no file path is stored</a></li>
+<li class="toctree-l2"><a class="reference internal" href="troubleshooting.html#the-molecule-looks-too-large-or-bonds-are-missing">The molecule looks too large or bonds are missing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="troubleshooting.html#the-viewport-is-slow">The viewport is slow</a></li>
+<li class="toctree-l2"><a class="reference internal" href="troubleshooting.html#rendering-an-animation-takes-a-long-time">Rendering an animation takes a long time</a></li>
+<li class="toctree-l2"><a class="reference internal" href="troubleshooting.html#colors-do-not-look-like-i-expected">Colors do not look like I expected</a></li>
+<li class="toctree-l2"><a class="reference internal" href="troubleshooting.html#i-accidentally-changed-the-scene">I accidentally changed the scene</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="glossary.html">Glossary</a></li>
+</ul>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="getting-started.html" class="btn btn-neutral float-right" title="Getting started" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Roy Wink.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

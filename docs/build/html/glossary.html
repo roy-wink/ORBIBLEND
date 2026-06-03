@@ -1,0 +1,152 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Glossary &mdash; ORBIBLEND 0.2 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=9edc463e" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=10f1778b"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="Troubleshooting" href="troubleshooting.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            ORBIBLEND
+              <img src="_static/orbiblend_logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">User guide</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="getting-started.html">Getting started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="quickstart.html">Quickstart: your first orbital render</a></li>
+<li class="toctree-l1"><a class="reference internal" href="interface.html">Interface guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="workflow.html">Common workflows</a></li>
+<li class="toctree-l1"><a class="reference internal" href="educational-use.html">Educational use</a></li>
+<li class="toctree-l1"><a class="reference internal" href="file-format.html">ABO files</a></li>
+<li class="toctree-l1"><a class="reference internal" href="troubleshooting.html">Troubleshooting</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Glossary</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">ORBIBLEND</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Glossary</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/glossary.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="glossary">
+<h1>Glossary<a class="headerlink" href="#glossary" title="Link to this heading"></a></h1>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">.abo</span> <span class="pre">file</span></code></dt><dd><p>Binary file imported by ORBIBLEND.  It stores atom coordinates and orbital
+surface mesh data.</p>
+</dd>
+<dt>Atom</dt><dd><p>A sphere representing a nucleus/element in the molecule.</p>
+</dd>
+<dt>Bond</dt><dd><p>A cylinder drawn between atoms when the distance is within ORBIBLEND’s bond
+detection thresholds.</p>
+</dd>
+<dt>Bohr</dt><dd><p>Atomic unit of length often used in quantum chemistry.</p>
+</dd>
+<dt>Angstrom</dt><dd><p>Common chemistry unit of length, equal to <code class="docutils literal notranslate"><span class="pre">10^-10</span></code> meters.</p>
+</dd>
+<dt>Frame</dt><dd><p>One entry inside an <code class="docutils literal notranslate"><span class="pre">.abo</span></code> file.  A frame may contain a molecule, one or
+more orbital-surface models, and a description.</p>
+</dd>
+<dt>Isosurface</dt><dd><p>A surface showing where an orbital has a constant value.  Molecular orbitals
+are often visualized as positive and negative isosurfaces.</p>
+</dd>
+<dt>Lobe</dt><dd><p>One connected part of an orbital isosurface.  ORBIBLEND may name two-model
+orbitals as positive and negative lobes.</p>
+</dd>
+<dt>Material</dt><dd><p>Blender settings for object color, transparency, and surface appearance.</p>
+</dd>
+<dt>Mesh</dt><dd><p>A Blender object made from vertices and faces.  ORBIBLEND converts orbital
+isosurfaces into meshes.</p>
+</dd>
+<dt>Molecular orbital</dt><dd><p>A wavefunction describing electron distribution over a molecule.  ORBIBLEND
+visualizes orbital shapes; it does not calculate the orbital itself.</p>
+</dd>
+<dt>Nodal plane</dt><dd><p>A plane where the orbital changes sign and the orbital value is zero.</p>
+</dd>
+<dt>Render</dt><dd><p>The process of turning the Blender scene into a final image or animation.</p>
+</dd>
+<dt>Viewport</dt><dd><p>The interactive 3D area in Blender.</p>
+</dd>
+</dl>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="troubleshooting.html" class="btn btn-neutral float-left" title="Troubleshooting" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Roy Wink.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

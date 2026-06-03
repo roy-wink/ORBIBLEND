@@ -1,0 +1,202 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Quickstart: your first orbital render &mdash; ORBIBLEND 0.2 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=9edc463e" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=10f1778b"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Interface guide" href="interface.html" />
+    <link rel="prev" title="Getting started" href="getting-started.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            ORBIBLEND
+              <img src="_static/orbiblend_logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">User guide</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="getting-started.html">Getting started</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Quickstart: your first orbital render</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#open-blender">1. Open Blender</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#open-the-abo-tab">2. Open the ABO tab</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#prepare-the-workspace">3. Prepare the workspace</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#import-an-abo-file">4. Import an ABO file</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#choose-what-to-draw">5. Choose what to draw</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#adjust-the-view">6. Adjust the view</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#render">7. Render</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#saving-your-image">Saving your image</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="interface.html">Interface guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="workflow.html">Common workflows</a></li>
+<li class="toctree-l1"><a class="reference internal" href="educational-use.html">Educational use</a></li>
+<li class="toctree-l1"><a class="reference internal" href="file-format.html">ABO files</a></li>
+<li class="toctree-l1"><a class="reference internal" href="troubleshooting.html">Troubleshooting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="glossary.html">Glossary</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">ORBIBLEND</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Quickstart: your first orbital render</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/quickstart.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="quickstart-your-first-orbital-render">
+<h1>Quickstart: your first orbital render<a class="headerlink" href="#quickstart-your-first-orbital-render" title="Link to this heading"></a></h1>
+<p>This tutorial creates a simple still image from an <code class="docutils literal notranslate"><span class="pre">.abo</span></code> file.  It assumes
+that ORBIBLEND is already installed and enabled.</p>
+<section id="open-blender">
+<h2>1. Open Blender<a class="headerlink" href="#open-blender" title="Link to this heading"></a></h2>
+<p>Start Blender and open the default scene.  It is fine if the default cube is
+visible; ORBIBLEND can remove it.</p>
+</section>
+<section id="open-the-abo-tab">
+<h2>2. Open the ABO tab<a class="headerlink" href="#open-the-abo-tab" title="Link to this heading"></a></h2>
+<p>Press <kbd class="kbd docutils literal notranslate">N</kbd> to show the right sidebar if needed, then choose the <code class="docutils literal notranslate"><span class="pre">ABO</span></code> tab.</p>
+</section>
+<section id="prepare-the-workspace">
+<h2>3. Prepare the workspace<a class="headerlink" href="#prepare-the-workspace" title="Link to this heading"></a></h2>
+<p>In <strong>Prepare workspace</strong>:</p>
+<ol class="arabic simple">
+<li><p>Click <strong>Delete unnecessary elements</strong>.</p></li>
+<li><p>Click <strong>Camera set-up</strong>.</p></li>
+</ol>
+<p>The camera setup creates a camera, a sun light, and circular guide paths.  These
+objects are placed in a <code class="docutils literal notranslate"><span class="pre">Render</span> <span class="pre">tools</span></code> collection so they do not get mixed with
+the molecule and orbitals.</p>
+</section>
+<section id="import-an-abo-file">
+<h2>4. Import an ABO file<a class="headerlink" href="#import-an-abo-file" title="Link to this heading"></a></h2>
+<p>In <strong>Import .abo file</strong>:</p>
+<ol class="arabic simple">
+<li><p>Click <strong>Import .abo file</strong>.</p></li>
+<li><p>Choose a file ending in <code class="docutils literal notranslate"><span class="pre">.abo</span></code>.</p></li>
+<li><p>Confirm the file selection.</p></li>
+</ol>
+<p>After import, ORBIBLEND lists the frames contained in the file.  A frame may be a
+single molecule-only view or one molecular orbital with its positive and negative
+lobes.</p>
+</section>
+<section id="choose-what-to-draw">
+<h2>5. Choose what to draw<a class="headerlink" href="#choose-what-to-draw" title="Link to this heading"></a></h2>
+<p>In <strong>.abo frames</strong>:</p>
+<ol class="arabic simple">
+<li><p>Click the frame you want.</p></li>
+<li><p>Leave <strong>Show Molecule</strong> enabled for a first render.</p></li>
+<li><p>Choose the correct unit, usually <strong>Bohr</strong> for PyQInt-generated files unless
+your source explicitly says the coordinates are in Angstrom.</p></li>
+<li><p>Click <strong>Create Meshes</strong>.</p></li>
+</ol>
+<p>The mesh creation step can take a moment for large orbitals.  ORBIBLEND loads the
+selected frame and creates Blender objects for the molecule, bonds, and orbital
+surfaces.</p>
+</section>
+<section id="adjust-the-view">
+<h2>6. Adjust the view<a class="headerlink" href="#adjust-the-view" title="Link to this heading"></a></h2>
+<p>In <strong>tweak view</strong>, try small changes first:</p>
+<ul class="simple">
+<li><p><strong>X 15°</strong> tilts the molecule/orbitals.</p></li>
+<li><p><strong>Z 15°</strong> rotates them around the vertical axis.</p></li>
+<li><p><strong>Zoom in</strong> and <strong>Zoom out</strong> adjust the camera path scale.</p></li>
+<li><p><strong>Transp. down</strong> and <strong>Transp. up</strong> change orbital transparency.</p></li>
+<li><p><strong>Edit colors</strong> lets you change molecule, bond, and orbital material colors.</p></li>
+</ul>
+<p>For educational figures, prefer simple views where the nodal plane, bonding
+region, or antibonding region is easy to see.</p>
+</section>
+<section id="render">
+<h2>7. Render<a class="headerlink" href="#render" title="Link to this heading"></a></h2>
+<p>In <strong>render</strong>:</p>
+<ul class="simple">
+<li><p>Click <strong>Render Current Frame</strong> to make a still image.</p></li>
+<li><p>Click <strong>Render Animation</strong> to create a rotating animation.  Blender may take a
+long time to render an animation, so start with a still image first.</p></li>
+</ul>
+</section>
+<section id="saving-your-image">
+<h2>Saving your image<a class="headerlink" href="#saving-your-image" title="Link to this heading"></a></h2>
+<p>After a still render opens in Blender’s render window, use
+<span class="menuselection">Image ‣ Save As…</span> to save the image.</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="getting-started.html" class="btn btn-neutral float-left" title="Getting started" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="interface.html" class="btn btn-neutral float-right" title="Interface guide" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Roy Wink.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

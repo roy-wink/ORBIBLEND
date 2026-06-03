@@ -1,0 +1,199 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Interface guide &mdash; ORBIBLEND 0.2 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=9edc463e" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=10f1778b"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Common workflows" href="workflow.html" />
+    <link rel="prev" title="Quickstart: your first orbital render" href="quickstart.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            ORBIBLEND
+              <img src="_static/orbiblend_logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">User guide</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="getting-started.html">Getting started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="quickstart.html">Quickstart: your first orbital render</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Interface guide</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#prepare-workspace">Prepare workspace</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#import-abo-file">Import .abo file</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#abo-frames">.abo frames</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#tweak-view">Tweak view</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#render">Render</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="workflow.html">Common workflows</a></li>
+<li class="toctree-l1"><a class="reference internal" href="educational-use.html">Educational use</a></li>
+<li class="toctree-l1"><a class="reference internal" href="file-format.html">ABO files</a></li>
+<li class="toctree-l1"><a class="reference internal" href="troubleshooting.html">Troubleshooting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="glossary.html">Glossary</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">ORBIBLEND</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Interface guide</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/interface.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="interface-guide">
+<h1>Interface guide<a class="headerlink" href="#interface-guide" title="Link to this heading"></a></h1>
+<p>ORBIBLEND places its workflow in the <code class="docutils literal notranslate"><span class="pre">ABO</span></code> tab of Blender’s 3D viewport
+sidebar.  The panels are intended to be used from top to bottom, but most buttons
+can be pressed repeatedly without damaging the scene.</p>
+<section id="prepare-workspace">
+<h2>Prepare workspace<a class="headerlink" href="#prepare-workspace" title="Link to this heading"></a></h2>
+<dl class="simple">
+<dt><strong>Delete unnecessary elements</strong></dt><dd><p>Selects and removes scene objects that are not part of ORBIBLEND’s render
+setup.  Camera, camera path, sun light, and light path are preserved when
+present.</p>
+</dd>
+<dt><strong>Camera set-up</strong></dt><dd><p>Creates or updates the camera, lighting, animation paths, render engine,
+render resolution, and animation frame range.  It also switches the viewport
+to camera view when possible.</p>
+</dd>
+</dl>
+</section>
+<section id="import-abo-file">
+<h2>Import .abo file<a class="headerlink" href="#import-abo-file" title="Link to this heading"></a></h2>
+<p><strong>Import .abo file</strong> opens a file picker for <code class="docutils literal notranslate"><span class="pre">.abo</span></code> files.  Importing a file
+clears previous ORBIBLEND molecule, bond, and orbital objects.  The add-on reads
+lightweight frame metadata first, so importing large files should remain
+responsive.</p>
+</section>
+<section id="abo-frames">
+<h2>.abo frames<a class="headerlink" href="#abo-frames" title="Link to this heading"></a></h2>
+<p>This panel appears after a file has been imported.</p>
+<dl class="simple">
+<dt>Frame list</dt><dd><p>Shows all frames found in the <code class="docutils literal notranslate"><span class="pre">.abo</span></code> file.  The first line of each frame
+description is shown in the list.</p>
+</dd>
+<dt>Additional Description</dt><dd><p>Displays extra description lines for the selected frame, if present.</p>
+</dd>
+<dt>Show Molecule</dt><dd><p>Controls whether atoms and bonds are created together with orbital surfaces.
+If a frame has no orbital models, this option is forced on so that molecule-only
+frames still display something useful.</p>
+</dd>
+<dt>Units</dt><dd><p>Chooses whether coordinates should be treated as <code class="docutils literal notranslate"><span class="pre">Bohr</span></code> or <code class="docutils literal notranslate"><span class="pre">Angstrom</span></code> for
+molecule radii and bond detection.  A wrong unit can make atoms look too large
+or prevent bonds from being drawn correctly.</p>
+</dd>
+<dt>Create Meshes</dt><dd><p>Loads the selected frame from the stored <code class="docutils literal notranslate"><span class="pre">.abo</span></code> file and creates the Blender
+objects.  This is the step where large orbital meshes are actually loaded.</p>
+</dd>
+</dl>
+</section>
+<section id="tweak-view">
+<h2>Tweak view<a class="headerlink" href="#tweak-view" title="Link to this heading"></a></h2>
+<p>This panel appears after meshes exist.</p>
+<dl class="simple">
+<dt>X rotation buttons</dt><dd><p>Tilt the molecule, bonds, and orbitals around the X axis.</p>
+</dd>
+<dt>Z rotation buttons</dt><dd><p>Rotate the molecule, bonds, and orbitals around the Z axis.</p>
+</dd>
+<dt>Transparency buttons</dt><dd><p>Increase or decrease orbital transparency.  Transparency is useful for seeing
+atoms inside an orbital lobe.</p>
+</dd>
+<dt>Zoom buttons</dt><dd><p>Move the camera closer or farther away by scaling the camera path.</p>
+</dd>
+<dt>Edit colors</dt><dd><p>Shows inline color controls for ORBIBLEND materials.  Use <strong>Confirm</strong> to apply
+the edited colors or <strong>Cancel</strong> to restore the previous colors.</p>
+</dd>
+</dl>
+</section>
+<section id="render">
+<h2>Render<a class="headerlink" href="#render" title="Link to this heading"></a></h2>
+<p>This panel appears after meshes exist.</p>
+<dl class="simple">
+<dt>Render Current Frame</dt><dd><p>Starts a still render using Blender’s current render settings.</p>
+</dd>
+<dt>Render Animation</dt><dd><p>Opens a confirmation dialog and then renders the animation.  The default setup
+uses a 360-frame camera/light path, so animation rendering is much slower than
+a still image.</p>
+</dd>
+</dl>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="quickstart.html" class="btn btn-neutral float-left" title="Quickstart: your first orbital render" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="workflow.html" class="btn btn-neutral float-right" title="Common workflows" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Roy Wink.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

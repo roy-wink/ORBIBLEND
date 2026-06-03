@@ -21,7 +21,7 @@ Import the ``.abo`` file again.  ORBIBLEND needs the stored path so it can load
 the selected frame on demand.
 
 The molecule looks too large or bonds are missing
--------------------------------------------------
+------------------------------------------------
 
 Check the **Units** setting in the frame panel.  A Bohr/Angstrom mismatch changes
 bond detection and atom radius scaling.
