@@ -1,31 +1,51 @@
-.. ORBIBLEND documentation master file, created by
-   sphinx-quickstart on Sat Sep 13 12:09:59 2025.
-   You can adapt this file completely to your liking, but it should at least
-   contain the root `toctree` directive.
+ORBIBLEND: Molecular orbital visualization in Blender
+=====================================================
 
-ORBIBLEND: A Blender add-on for quick and intuative MO visualization
-====================================================================
+.. image:: ../img/orbiblend_logo.png
+   :alt: ORBIBLEND logo
+   :align: center
+   :width: 280px
 
-[put something here for break]
+**ORBIBLEND** is a Blender add-on for quickly visualizing molecules and
+molecular orbitals from ``.abo`` files.  It is designed for classroom and
+self-study settings: the main workflow lives in one Blender sidebar tab, and
+this documentation assumes that you may be opening Blender for the first time.
 
-Introduction
-------------
+The add-on connects quantum-chemistry output to Blender's rendering tools.  An
+``.abo`` file stores atom positions and tessellated orbital isosurfaces; ORBIBLEND
+lets you import those frames, choose the orbital or molecule view that you want,
+adjust the camera, and render still images or rotating animations.
 
-**ORBIBLEND** is a Blender add-on designed to visualize molecular orbitals directly from `.abo` files — a compact file format that stores tesselated isosurfaces of quantum chemically calculated orbitals, alongside atomic coordinates and styling information.
+Start here
+----------
 
-The `.abo` format is used by `**PyQInt** <https://github.com/ifilot/pyqint/tree/master>`__, a Python-based quantum chemistry toolkit developed to simplify complex electronic structure calculations, particularly in an educational context. ORBIBLEND bridges the output of PyQInt with Blender's powerful rendering capabilities, enabling users to produce high-quality static images and animations of molecular orbitals with minimal effort.
+If you are new to ORBIBLEND, read these pages in order:
 
-The add-on offers a user-friendly interface suitable for **students with no prior Blender experience**, while remaining fully customizable for **advanced users and educators**. With just a few clicks, users can:
+#. :doc:`getting-started` explains installation and how to find the ABO sidebar.
+#. :doc:`quickstart` walks through creating your first molecular-orbital render.
+#. :doc:`interface` explains every panel and button in the add-on.
+#. :doc:`workflow` gives practical step-by-step recipes for common classroom tasks.
 
-- Import `.abo` files containing molecular orbitals and atom data.
-- View, rotate, zoom, and recolor molecular structures and isosurfaces.
-- Render high-quality images or generate animations (e.g., rotating orbitals).
-- Edit orbital and atomic colors through a streamlined UI.
+Educational focus
+-----------------
 
-By offering intuitive and flexible tools for molecular visualization, ORBIBLEND supports **conceptual understanding of molecular orbital theory** through **visual learning** — a proven strategy in chemical education
+ORBIBLEND aims to help students build intuition about molecular orbitals rather
+than to hide the chemistry behind a photorealistic image.  The documentation
+therefore explains Blender vocabulary, suggests safe default settings, and points
+out where visual choices can change how an orbital is perceived.
 
+Contents
+--------
 
 .. toctree::
    :maxdepth: 2
-   :caption: Contents:
+   :caption: User guide
 
+   getting-started
+   quickstart
+   interface
+   workflow
+   educational-use
+   file-format
+   troubleshooting
+   glossary
